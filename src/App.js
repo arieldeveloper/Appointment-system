@@ -1,13 +1,12 @@
+import HomePage from "./pages/home.js";
+import UserPage from "./pages/users.js";
 import './App.css';
-import React from "react";
 import {
     BrowserRouter as Router,
     Switch,
     Route
 } from "react-router-dom";
-
-import HomePage from "./pages/home.js";
-import UserPage from "./pages/users.js";
+import React from "react";
 
 
 function alert() {
@@ -16,7 +15,6 @@ function alert() {
 
 function App() {
   return (
-
       <Router>
           <>
           <Switch>
@@ -33,3 +31,4 @@ function App() {
 }
 
 export default App;
+
