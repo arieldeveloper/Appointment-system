@@ -26,7 +26,9 @@ app.use(bodyParser.json({limit: '50mb'}));
 
 // Import Routes, use middleware
 const postsRoute = require('./routes/posts');
+const appointmentsRoute = require('./routes/appointments');
 app.use('/api/posts', postsRoute);
+app.use('/api/appointments', appointmentsRoute);
 
 //Connecting to Database
 const uri = process.env.DATABASE_CONNECTION;
