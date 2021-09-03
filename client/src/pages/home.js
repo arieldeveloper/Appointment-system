@@ -4,16 +4,44 @@ import {Link} from "react-router-dom";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import updateDailyTimetable from "../components/booking";
+import './home.css';
+// let allMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+var selectedAppointment = "Please select appointment";
 
-let allMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 function HomePage() {
     const [value, setValue] = useState(new Date());
     const [appointments, setAppointments] = useState(null);
     const [selectedValue, setSelectedValue] = useState("Nothing Selected");
 
     const bookAppointment = () => {
-        console.log('booked appointment for ' + getDateTimeString(selectedValue));
+        // Function that runs when the "Book Appointment" Button is pressed
+        try {
+            // Retrieve details for the post body
+            let year = selectedAppointment.getYear() + 1900;
+            let month = selectedAppointment.getUTCMonth() + 1;
+            let day = selectedAppointment.getDate();
+            let hours = selectedAppointment.getHours();
+            let minutes = selectedAppointment.getUTCMinutes();
 
+            fetch('api/appointments', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    day: day,
+                    month: month,
+                    year: year,
+                    hour: hours,
+                    minute: minutes,
+                    user: "arieldeveloper",
+                })
+            })
+
+        } catch {
+            console.log("Please select a time");
+        }
     }
 
     const getDateString = (date) => {
@@ -22,12 +50,19 @@ function HomePage() {
     }
 
     const getDateTimeString = (date) => {
-        let dateString = date.toString().split(' ').splice(0, 6).join(' ');
+        let dateString = date.toString().split(' ').splice(0, 5).join(' ');
         return dateString;
     }
 
+    const getHourString = (date) => {
+        let dateString = date.toString().split(' ').splice(4, 1).join(' ');
+        return dateString;
+    }
+
+
     const handleInput = (element) => {
-        setSelectedValue(getDateTimeString(element));
+        selectedAppointment = element.date;
+        setSelectedValue(getDateTimeString(element.date));
     }
 
     //Import Data from MongoDB
@@ -48,27 +83,22 @@ function HomePage() {
     //
     return (
         [<div>
-            <h1>Home
-                <Link to="/users"> Users </Link></h1>
+            <h1>Appointment Page</h1>
 
             <Calendar onChange={ setValue }
                       value={value}/>
 
             <h3> Showing Appointments For: { getDateString(value) } </h3>
+            <div>
             { appointments && (
                 <div>
                     {appointments.map((app, index) => (
-                        <li onClick={() => handleInput(app.date)}> { getDateTimeString(app.date) },
+                        <li onClick={() => handleInput(app)}> { getHourString(app.date) },
                             available: { app.available.toString() } </li>
-
-                        // <h5>{ allMonths[app.month - 1] } { app.day }, { app.year }
-                        // at {app.hour }:{ "0" + app.minute },
-                        //     Availability: {app.available.toString()} }
-                        // </h5>
                     ))}
                 </div>
             ) }
-
+            </div>
             <h4> Appointment Selected: { selectedValue } </h4>
             <button onClick={bookAppointment}>Book Appointment</button>
 

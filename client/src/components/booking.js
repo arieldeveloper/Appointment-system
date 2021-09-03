@@ -1,13 +1,4 @@
 // All functions pertaining to the appointment system
-let testData = [{"user":"admin","_id":"6123cba99675f82c73adb053","day":23,"month":8,"year":2021,"hour":12,"minute":23,"__v":0},
-    {"user":"admin","_id":"6123ce632ef8d32cd5083baf","day":23,"month":3,"year":2021,"hour":12,"minute":23,"__v":0},
-    {"user":"admin","_id":"6123cf0fcaa6162cf9a95e19","day":23,"month":3,"year":2021,"hour":12,"minute":23,"__v":0},
-    {"user":"admin","_id":"6123cf4f777bc62d15c4605a","day":23,"month":3,"year":2021,"hour":12,"minute":23,"__v":0},
-    {"user":"arieldeveloper","_id":"6123cf53777bc62d15c4605c","day":23,"month":3,"year":2021,"hour":12,"minute":23,"__v":0},
-    {"user":"arieldeveloper","_id":"6123ff50777bc62d15c46064","day":1,"month":1,"year":2021,"hour":12,"minute":0,"__v":0},
-    {"user":"arieldeveloper","_id":"6123ff53777bc62d15c46066","day":1,"month":1,"year":2021,"hour":6,"minute":0,"__v":0}];
-
-
 function generateTimetable(day, month, year, startTime, endTime, interval) {
     // Creates an time table slots given a start time, end time and intervals
     // startTime > 0 && endTime < 24, intervals < 60 (interval given in minutes)
@@ -18,7 +9,7 @@ function generateTimetable(day, month, year, startTime, endTime, interval) {
     for (var hour = startTime; hour < (endTime + 1); hour++) {
         for (var minute = 0; minute < (60 / interval) * interval; minute += interval) {
             let newObj = {};
-            const dateReturned = new Date(year, month, day, hour, minute);
+            const dateReturned = new Date(year, month - 1, day, hour, minute);
             newObj.date = dateReturned;
             newObj.available = true;
             timeTableObj.push(newObj);
@@ -49,8 +40,8 @@ function updateDailyTimetable(startTime, endTime, interval, day, month, year, da
     // Loop through all avaiable slots and make them unavailable based on booked time slots
     for (var i = 0; i < newTimeTable.length; i++) {
         for (var j = 0; j < bookedTimes.length; j++) {
-            if (bookedTimes[j].hour === newTimeTable[i].hour &&
-                bookedTimes[j].minute === newTimeTable[i].minute) {
+            if (bookedTimes[j].hour === newTimeTable[i].date.getHours() &&
+                bookedTimes[j].minute === newTimeTable[i].date.getUTCMinutes()) {
                 // slot is already booked
                 newTimeTable[i].available = false;
             }

@@ -32,6 +32,7 @@ app.use('/api/appointments', appointmentsRoute);
 
 //Connecting to Database
 const uri = process.env.DATABASE_CONNECTION;
+
 try {
     mongoose.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true }, () =>
     { console.log('Connected to database mongodb') });
