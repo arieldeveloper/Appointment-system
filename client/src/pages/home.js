@@ -3,8 +3,16 @@ import {useState, useEffect } from "react";
 import {Link} from "react-router-dom";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import updateDailyTimetable from "../components/booking";
-import './home.css';
+import updateDailyTimetable from "../booking";
+
+//Styling Imports
+import { GlobalStyles } from "../GlobalStyles.style";
+import { Button} from "../components/Button.style";
+import { Container, RowContainer, CalenderContainer, AppointmentsContainer} from "../components/Container.style";
+import { NavBar } from "../components/NavigationBar.style";
+import { ListItem } from "../components/ListItem.style";
+
+
 // let allMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var selectedAppointment = "Please select appointment";
 
@@ -42,6 +50,7 @@ function HomePage() {
         } catch {
             console.log("Please select a time");
         }
+        setSelectedValue("Booked");
     }
 
     const getDateString = (date) => {
@@ -82,27 +91,35 @@ function HomePage() {
 
     //
     return (
-        [<div>
-            <h1>Appointment Page</h1>
+        [<Container backgroundColor="white" textColor="black">
+            <GlobalStyles/>
 
-            <Calendar onChange={ setValue }
-                      value={value}/>
+            <NavBar>
+                <h1>Book Appointment</h1>
+                <div> </div>
+                <Button backgroundColor="#3366ff"><Link to="/"></Link>Login</Button>
+            </NavBar>
 
+            <CalenderContainer backgroundColor="white"  textColor="black">
+                <Calendar onChange={ setValue } value={value}/>
+            </CalenderContainer>
+
+            <AppointmentsContainer backgroundColor="black"  textColor="white">
             <h3> Showing Appointments For: { getDateString(value) } </h3>
             <div>
             { appointments && (
                 <div>
                     {appointments.map((app, index) => (
-                        <li onClick={() => handleInput(app)}> { getHourString(app.date) },
-                            available: { app.available.toString() } </li>
+                        <ListItem opacity={app.available.toString() === "true" ? 1: 0.6} onClick={app.available.toString() === "true" ? (() => handleInput(app)) : null}> { getHourString(app.date) }</ListItem>
                     ))}
                 </div>
             ) }
             </div>
             <h4> Appointment Selected: { selectedValue } </h4>
-            <button onClick={bookAppointment}>Book Appointment</button>
+            <Button backgroundColor="#3366ff" onClick={bookAppointment}>Book Appointment</Button>
+            </AppointmentsContainer>
 
-        </div>]
+        </Container>]
     );
 }
 

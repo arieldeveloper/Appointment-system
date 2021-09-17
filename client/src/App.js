@@ -1,6 +1,5 @@
 import HomePage from "./pages/home.js";
 import UserPage from "./pages/users.js";
-import './App.css';
 
 import {
     BrowserRouter as Router,
@@ -9,7 +8,6 @@ import {
 } from "react-router-dom";
 
 import React from "react";
-
 
 function App() {
   return (
