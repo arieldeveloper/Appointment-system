@@ -1,6 +1,6 @@
 A booking system that allows users to book appointments through a calendar. 
 
-Created using Node, React and MongoDB, styled using Styled Components
+Created using Node, Express, React and MongoDB, styled using Styled Components
 
 ## Run Instructions 
 
