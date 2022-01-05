@@ -1,5 +1,7 @@
 A booking system that allows users to book appointments through a calendar. 
 
+Created using Node, React and MongoDB, styled using Styled Components
+
 ## Run Instructions 
 
 1. Add MongoDB driver connection to the .env file
